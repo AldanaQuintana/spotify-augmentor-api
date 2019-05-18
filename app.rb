@@ -13,7 +13,7 @@ require "cuba/safe"
 require 'json_params'
 require 'logging'
 
-require 'base_app'
+require 'spotify_augmentor'
 
 require 'base_app_api'
 
@@ -29,7 +29,7 @@ Cuba.define do
   on default do
     begin
       logger.info("#{req.request_method} #{req.path} #{params}")
-      run  Routes::BaseApp
+      run  Routes::SpotifyAugmentor
     rescue BaseAppAPI::Error => e
       res.status = 422
       res.write({ message: e.message}.to_json )
