@@ -1,6 +1,9 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    amq-protocol (2.3.0)
+    bunny (2.14.2)
+      amq-protocol (~> 2.3, >= 2.3.0)
     coderay (1.1.0)
     cuba (3.4.0)
       rack
@@ -41,6 +44,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bunny
   cuba
   irb (~> 1.0)
   mina
