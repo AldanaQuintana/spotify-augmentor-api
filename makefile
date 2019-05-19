@@ -8,6 +8,9 @@ test:
 	env $$(cat .env) bundle exec rspec spec
 
 console:
+	make console-env env=development
+
+console-env:
 	@if [ $(env) = "production" ]; then\
 		env $$(cat .env) bundle exec irb -r ./app;\
 	else\
