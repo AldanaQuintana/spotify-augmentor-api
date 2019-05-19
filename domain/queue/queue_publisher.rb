@@ -52,7 +52,7 @@ module QueuePublisher
     end
   end
 
-  class Tracks < Base
+  class PlayedTracks < Base
     def routing_key
       "tracks.played"
     end
