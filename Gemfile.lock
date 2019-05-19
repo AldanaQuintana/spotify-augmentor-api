@@ -5,6 +5,7 @@ GEM
     bunny (2.14.2)
       amq-protocol (~> 2.3, >= 2.3.0)
     coderay (1.1.0)
+    concurrent-ruby (1.1.5)
     cuba (3.4.0)
       rack
     diff-lcs (1.2.5)
@@ -36,9 +37,19 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.3.0)
     rspec-support (3.3.0)
+    serverengine (2.0.7)
+      sigdump (~> 0.2.2)
     shotgun (0.9.1)
       rack (>= 1.0)
+    sigdump (0.2.4)
     slop (3.6.0)
+    sneakers (2.11.0)
+      bunny (~> 2.12)
+      concurrent-ruby (~> 1.0)
+      rake
+      serverengine (~> 2.0.5)
+      thor
+    thor (0.20.3)
 
 PLATFORMS
   ruby
@@ -53,6 +64,7 @@ DEPENDENCIES
   rack-test
   rspec
   shotgun
+  sneakers
 
 BUNDLED WITH
    1.17.2

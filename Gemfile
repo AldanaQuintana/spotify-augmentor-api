@@ -10,3 +10,4 @@ gem 'rspec'
 gem 'pry'
 gem "irb", "~> 1.0"
 gem "bunny"
+gem "sneakers"
