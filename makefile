@@ -16,4 +16,6 @@ console-env:
 	else\
 		env $$(cat .env.$(env)) bundle exec irb -r ./app;\
 	fi
-	
+
+qsubscribers:
+	env $$(cat .env.development) ./bin/queue_subscribers
