@@ -17,7 +17,7 @@ RSpec.configure do |config|
   end
 
   config.after(:each) do
-    # Clean your database here
+    MongoClient.current.database.drop
   end
 
   config.before do
@@ -26,6 +26,8 @@ RSpec.configure do |config|
 
     app.settings[:logger] = test_logger
 
+    Mongo::Logger.logger.level = ::Logger::FATAL
+    MongoClient.initialize_client
     BaseAppAPI.logger = test_logger
   end
 end

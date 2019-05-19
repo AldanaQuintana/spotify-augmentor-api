@@ -5,15 +5,14 @@ module QueueSubscriber
   class Base
     include Sneakers::Worker
 
-    def work(routing_key, deserialized)
+    def _work(routing_key, deserialized)
       raise 'Should be implemented in subclass'
     end
 
-    def work_with_params(msg, delivery_info, metadata)
+    def work(msg)
       begin
-        routing_key = parse_routing_key(delivery_info[:routing_key])
         deserialized = JSON.parse(msg)
-        work(routing_key, deserialized)
+        _work(deserialized["message"])
 
         ack!
       rescue Timeout::Error => e
@@ -21,12 +20,7 @@ module QueueSubscriber
       rescue EOFError => e
         requeue!
       rescue StandardError => e
-        parameters = {
-          msg: msg,
-          delivery_info: delivery_info,
-          metadata: metadata
-        }
-        puts "ERROR #{e} - #{parameters}"
+        puts "ERROR #{e} - #{msg}"
 
         reject!
       end
@@ -42,12 +36,23 @@ module QueueSubscriber
 
   class Top10 < Base
     from_queue :events, exchange: "tracks", exchange_type: :topic, routing_key: ["tracks.played"], ack: true
+    # TODO: Add a TTL index
 
-    def work(routing_key, deserialized)
+    def _work(deserialized)
       tracks = deserialized["tracks"]
 
-      puts tracks
-      # TODO: procesar los tracks 
+      ops = tracks.map do |entry|
+        {
+          update_one: {
+            filter: { id: entry["id"], user_id: entry["user_id"] },
+            update: entry,
+            upsert: true
+          }
+        }
+      end
+
+
+      MongoClient.current[:tracks_played].bulk_write(ops)
     end
   end
 end
