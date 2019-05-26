@@ -34,7 +34,7 @@ module QueueSubscriber
     end
   end
 
-  class Top10 < Base
+  class TracksPlayed < Base
     from_queue :events, exchange: "tracks", exchange_type: :topic, routing_key: ["tracks.played"], ack: true
     # TODO: Add a TTL index
 

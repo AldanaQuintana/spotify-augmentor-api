@@ -1,9 +1,9 @@
 require 'spec_helper'
 require 'queue/queue_subscriber'
 
-describe QueueSubscriber::Top10 do
+describe QueueSubscriber::TracksPlayed do
 	let(:before_processing_execute) { nil }
-	let(:subscriber) { QueueSubscriber::Top10.new }
+	let(:subscriber) { QueueSubscriber::TracksPlayed.new }
 
 	describe 'when a tracks.played message is processed' do
 		let!(:before_timestamp) { (Time.now - 1000).to_s }
