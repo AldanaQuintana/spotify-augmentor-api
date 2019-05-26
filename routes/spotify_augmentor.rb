@@ -10,4 +10,10 @@ Routes::SpotifyAugmentor.define do
 			res.write 'pong'
 		end
 	end
+
+	on 'top-10' do
+		on get do
+			res.status = 200
+		end
+	end
 end

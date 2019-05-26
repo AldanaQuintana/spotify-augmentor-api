@@ -10,6 +10,7 @@ require File.join(File.dirname(File.expand_path(__FILE__)), '../app.rb')
 RSpec.configure do |config|
   config.include Rack::Test::Methods
   config.include RequestHelpers
+  config.include MongoHelpers
   config.color = true
 
   config.mock_with :rspec do |mocks|

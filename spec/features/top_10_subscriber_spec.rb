@@ -39,23 +39,23 @@ describe QueueSubscriber::Top10 do
 			expect(saved_track_entry[:timestamp]).to eq(now_timestamp)
 		end
 
-		context 'and the entry for that track id already existed' do
+		context 'the entry for that track id already existed' do
 			let(:before_processing_execute) do
-				lambda { insert_one(track_id_1, user_id_1, before_timestamp) }
+				lambda { insert_track(track_id_1, user_id_1, before_timestamp) }
 			end		
-
-			it 'doesn\'t save it again' do
-				expect(tracks_played_collection.find({}).count).to eq(1)
-			end
 
 			context 'and it is from the same user' do
 				let(:before_processing_execute) do
 					lambda { 
-						insert_one(
+						insert_track(
 							track_id_1, user_id_1, before_timestamp
 						) 
 					}
 				end	
+
+				it 'doesn\'t save it again' do
+					expect(tracks_played_collection.find({}).count).to eq(1)
+				end
 
 				it 'updates the timestamp' do
 					expect(saved_track_entry[:timestamp]).to eq(now_timestamp)
@@ -66,7 +66,7 @@ describe QueueSubscriber::Top10 do
 				let(:another_user_id) { "anotheruserid" }
 				let(:before_processing_execute) do
 					lambda { 
-						insert_one(
+						insert_track(
 							track_id_1, another_user_id, before_timestamp
 						) 
 					}
@@ -78,24 +78,6 @@ describe QueueSubscriber::Top10 do
 				end
 			end
 		end
-	end
-
-	def tracks_played_collection
-		MongoClient.current[:tracks_played]
-	end
-
-	def saved_track_entry
-		saved_track_entries.first
-	end
-
-	def saved_track_entries
-		tracks_played_collection.find({})
-	end
-
-	def insert_one(track_id, user_id, timestamp)
-		tracks_played_collection.insert_one(
-			{ id: track_id, user_id: user_id, timestamp: timestamp }
-		)
 	end
 
 	def execute_before_processing!
