@@ -28,13 +28,13 @@ describe QueueSubscriber::Top10Worker do
 			subscriber.work(msg)
 		end
 
-		describe 'and there are no tracks for that period of time' do
+		context 'and there are no tracks for that period of time' do
 			it 'saves nothing' do
 				expect(saved_top_10_entries.count).to eq(0)
 			end
 		end
 
-		describe 'and there are tracks for that period of time' do
+		context 'and there are tracks for that period of time' do
 			let(:in_period) { DateTime.strptime('2019-04-02', '%Y-%m-%d') }
 			let(:track_id_1) { '68mzU8iAvNnF3PCidY66K0' }
 			let(:track_id_2) { '51ChrwmUPDJvedPQnIU8Ls' }
