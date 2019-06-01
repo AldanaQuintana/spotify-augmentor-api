@@ -45,7 +45,7 @@ module QueueSubscriber
         {
           update_one: {
             filter: { id: entry["id"], user_id: entry["user_id"] },
-            update: entry,
+            update: { id: entry["id"], user_id: entry["user_id"], timestamp: Time.parse(entry["timestamp"])},
             upsert: true
           }
         }
@@ -53,6 +53,38 @@ module QueueSubscriber
 
 
       MongoClient.current[:tracks_played].bulk_write(ops)
+    end
+  end
+
+  class Top10Worker < Base
+    from_queue :batch_process, exchange: "delayed", exchange_type: :topic, routing_key: ["process.top_10"], ack: true
+
+    def _work(deserialized)
+      period = deserialized["period"]
+      from = Time.parse(period["from"])
+      to = Time.parse(period["to"])
+
+      played_on_period = MongoClient.current[:tracks_played].aggregate([
+        {
+          "$match" => { timestamp: { "$gt" => from, "$lt" => to } }
+        },
+        {
+          "$group" => { _id: "$id", play_count: { "$sum" => 1 } }
+        },
+        {
+          "$sort" => { play_count: -1 }
+        }
+      ])
+
+      if (played_on_period.count > 0)
+        MongoClient.current[:top_10].insert_one({
+          from: from,
+          to: to,
+          tracks: played_on_period.map do |entry|
+            { id: entry["_id"], play_count: entry["play_count"] }
+          end
+        })
+      end
     end
   end
 end

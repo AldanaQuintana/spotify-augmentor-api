@@ -6,8 +6,8 @@ describe QueueSubscriber::TracksPlayed do
 	let(:subscriber) { QueueSubscriber::TracksPlayed.new }
 
 	describe 'when a tracks.played message is processed' do
-		let!(:before_timestamp) { (Time.now - 1000).to_s }
-		let!(:now_timestamp) { Time.now.to_s }
+		let!(:before_timestamp) { Time.now - 1000 }
+		let!(:now_timestamp) { Time.now }
 		let(:user_id_1) { 1234 }
 		let(:track_id_1) { '0bVtevEgtDIeRjCJbK3Lmv' }
 		let(:msg) do
@@ -36,7 +36,12 @@ describe QueueSubscriber::TracksPlayed do
 		it 'saves it with the right format' do
 			expect(saved_track_entry[:id]).to eq(track_id_1)
 			expect(saved_track_entry[:user_id]).to eq(user_id_1)
-			expect(saved_track_entry[:timestamp]).to eq(now_timestamp)
+			expect(
+				equal_dates(
+					saved_track_entry[:timestamp], 
+					now_timestamp
+				)
+			).to be(true)
 		end
 
 		context 'the entry for that track id already existed' do
@@ -58,7 +63,12 @@ describe QueueSubscriber::TracksPlayed do
 				end
 
 				it 'updates the timestamp' do
-					expect(saved_track_entry[:timestamp]).to eq(now_timestamp)
+					expect(
+						equal_dates(
+							saved_track_entry[:timestamp], 
+							now_timestamp
+						)
+					).to be(true)
 				end				
 			end
 

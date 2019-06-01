@@ -11,6 +11,7 @@ RSpec.configure do |config|
   config.include Rack::Test::Methods
   config.include RequestHelpers
   config.include MongoHelpers
+  config.include TimeHelpers
   config.color = true
 
   config.mock_with :rspec do |mocks|
