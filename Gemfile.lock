@@ -53,6 +53,7 @@ GEM
       serverengine (~> 2.0.5)
       thor
     thor (0.20.3)
+    timecop (0.9.1)
 
 PLATFORMS
   ruby
@@ -69,6 +70,7 @@ DEPENDENCIES
   rspec
   shotgun
   sneakers
+  timecop
 
 BUNDLED WITH
    1.17.2

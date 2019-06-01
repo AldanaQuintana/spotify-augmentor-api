@@ -12,3 +12,7 @@ gem "irb", "~> 1.0"
 gem "bunny"
 gem "sneakers"
 gem 'mongo'
+
+group :test do
+	gem 'timecop'
+end

@@ -50,7 +50,7 @@ module QueueSubscriber
   end
 
   class Top10Worker < Base
-    from_queue :batch_process, exchange: "delayed", exchange_type: :topic, routing_key: ["process.top_10"], ack: true
+    from_queue :batch_process, exchange: "batch_process", routing_key: ["batch_process"], ack: true
 
     def _work(deserialized)
       period = deserialized["period"]
