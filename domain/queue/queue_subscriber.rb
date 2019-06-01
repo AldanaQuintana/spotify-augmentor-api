@@ -25,13 +25,6 @@ module QueueSubscriber
         reject!
       end
     end
-
-    def parse_routing_key(key)
-      regexp_convention = /(.+)\.(.+)/
-      match_data = regexp_convention.match(key)
-
-      match_data.nil? ? key : match_data[2]
-    end
   end
 
   class TracksPlayed < Base
