@@ -17,7 +17,7 @@ module BunnyHelper
 
   def expect_message_to_be_delayed(from, delay, message)
     delay_in_ms = delay.to_i
-    delayed_queue_name = "send.later.queued_at_#{from}.process_at_#{from + (delay_in_ms / 1000).seconds}"
+    delayed_queue_name = "send.later.queued_at_#{from}.process_at_#{(from + (delay_in_ms / 1000).seconds)}"
 
     expect_queue_to_be_created(delayed_queue_name, :arguments => { 
       "x-dead-letter-exchange" => "",

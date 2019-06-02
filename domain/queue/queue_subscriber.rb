@@ -1,5 +1,6 @@
 require 'sneakers'
 require 'json'
+require 'as-duration'
 require_relative '../database/mongo_client'
 
 module QueueSubscriber
@@ -79,6 +80,12 @@ module QueueSubscriber
           end
         })
       end
+
+      delay_in_ms = 1.minute.to_i * 1000
+
+      MessageDelayer.deliver_async({message: {
+        top_10_since: to + 1.second
+      }, delay: delay_in_ms })
     end
   end
 end

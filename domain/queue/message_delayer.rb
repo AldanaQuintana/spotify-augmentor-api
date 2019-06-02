@@ -41,7 +41,7 @@ class MessageDelayer < QueuePublisher::Base
   def message_from(options)
   	if(!options[:message].nil? && !options[:message][:top_10_since].nil?)
   		from = options[:message][:top_10_since]
-  		to = from + options[:delay].to_i
+  		to = from + (options[:delay].to_i / 1000).seconds
 
   		{
   			period: {

@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'timecop'
+require 'as-duration'
 require 'queue/message_delayer'
 
 describe MessageDelayer do
@@ -25,7 +26,7 @@ describe MessageDelayer do
 				expect_message_to_be_delayed(now, delay_in_ms, {
 					period: {
 						from: now,
-						to: now + delay_in_ms
+						to: now + (delay_in_ms / 1000).seconds
 					}
 				})
 

@@ -1,7 +1,12 @@
 require 'spec_helper'
+require 'as-duration'
+require 'timecop'
 require 'queue/queue_subscriber'
 
+
 describe QueueSubscriber::Top10Worker do
+	include BunnyHelper
+	let(:now) { Time.now }
 	let(:before_processing_execute) { nil }
 	let(:track_id_0){ '0bVtevEgtDIeRjCJbK3Lmv' }
 	let(:user_id_1) { 1234 }
@@ -10,15 +15,34 @@ describe QueueSubscriber::Top10Worker do
 	let(:from) { DateTime.strptime('2019-04-01', '%Y-%m-%d') }
 	let(:to) { DateTime.strptime('2019-04-05', '%Y-%m-%d') }
 	let(:msg) do
-			{
-				message: {
-					period: {
-						from: from,
-						to: to
-					}
+		{
+			message: {
+				period: {
+					from: from,
+					to: to
 				}
-			}.to_json
+			}
+		}.to_json
+	end
+
+	before(:each) do
+		stub_bunny
+	end
+
+	it 'enqueues another message' do
+		new_message_from = to + 1.second #TODO: Fix ugly hack (+ 1.second). I was having a problem with the date format
+		delay_in_ms = 60000
+		expect_message_to_be_delayed(now, delay_in_ms, {
+			period: {
+				from: new_message_from,
+				to: new_message_from + (delay_in_ms / 1000).seconds
+			}
+		})
+
+		Timecop.freeze(now) do
+			subscriber.work(msg)
 		end
+	end
 
 
 	describe 'when a process.top_10 msg is processed' do
