@@ -18,7 +18,7 @@ describe MessageDelayer do
 			end
 		end
 
-		context 'delaying the message' do
+		context 'delaying a top_10_since message' do
 			let(:delay_in_ms){ 400 }
 
 			it do
