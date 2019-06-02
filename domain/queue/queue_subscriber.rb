@@ -1,5 +1,6 @@
 require 'sneakers'
 require 'json'
+require_relative '../database/mongo_client'
 
 module QueueSubscriber
   class Base
@@ -50,7 +51,7 @@ module QueueSubscriber
   end
 
   class Top10Worker < Base
-    from_queue :batch_process, exchange: "batch_process", routing_key: ["batch_process"], ack: true
+    from_queue :batch_process, durable: true
 
     def _work(deserialized)
       period = deserialized["period"]

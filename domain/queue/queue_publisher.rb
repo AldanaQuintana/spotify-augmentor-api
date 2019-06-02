@@ -19,7 +19,7 @@ module QueuePublisher
     end
 
     def publish!(options, exchange)
-      exchange.publish(options[:message].to_json, :routing_key => routing_key)
+      exchange.publish({ message: options[:message]}.to_json, :routing_key => routing_key)
     end
 
     def publish(options)

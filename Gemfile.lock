@@ -2,6 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     amq-protocol (2.3.0)
+    as-duration (0.1.1)
     bson (4.4.2)
     bunny (2.14.2)
       amq-protocol (~> 2.3, >= 2.3.0)
@@ -59,6 +60,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  as-duration
   bunny
   cuba
   irb (~> 1.0)

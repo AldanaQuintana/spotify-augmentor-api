@@ -13,7 +13,7 @@ describe MessageDelayer do
 
 		context 'without delaying' do
 			it do
-				expect_message_to_be_published({}.to_json, "batch_process").once
+				expect_message_to_be_published({}, "batch_process").once
 				MessageDelayer.deliver_async({ message: {} })
 			end
 		end

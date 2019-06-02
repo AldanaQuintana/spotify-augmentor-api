@@ -1,4 +1,5 @@
 require_relative 'queue_publisher'
+require 'as-duration'
 
 class MessageDelayer < QueuePublisher::Base
   def self.deliver_async(options)
@@ -19,7 +20,7 @@ class MessageDelayer < QueuePublisher::Base
 
       from = Time.now
       delay_in_ms = options[:delay].to_i
-      key = "batch_process.queued_at_#{from}.process_at_#{from + delay_in_ms}"
+      key = "send.later.queued_at_#{from}.process_at_#{(from + (delay_in_ms / 1000).seconds)}"
 
       queue = channel.queue(key, :arguments => {
         "x-dead-letter-exchange" => "",
@@ -41,7 +42,7 @@ class MessageDelayer < QueuePublisher::Base
   	if(!options[:message].nil? && !options[:message][:top_10_since].nil?)
   		from = options[:message][:top_10_since]
   		to = from + options[:delay].to_i
-  		
+
   		{
   			period: {
   				from: from,
