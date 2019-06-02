@@ -9,18 +9,12 @@ describe MessageDelayer do
 	end
 
 	describe 'deliver_async' do
-		let(:from) { Time.now }
 		let(:now) { Time.now }
-		let(:message) do
-			{
-				top_10_since: from
-			}
-		end
 
 		context 'without delaying' do
 			it do
-				expect_message_to_be_published(message.to_json, "batch_process").once
-				MessageDelayer.deliver_async({ message: message })
+				expect_message_to_be_published({}.to_json, "batch_process").once
+				MessageDelayer.deliver_async({ message: {} })
 			end
 		end
 
@@ -28,10 +22,17 @@ describe MessageDelayer do
 			let(:delay_in_ms){ 400 }
 
 			it do
-				expect_message_to_be_delayed(now, delay_in_ms, message)
+				expect_message_to_be_delayed(now, delay_in_ms, {
+					period: {
+						from: now,
+						to: now + delay_in_ms
+					}
+				})
 
 				Timecop.freeze(now) do
-					MessageDelayer.deliver_async({message: message, delay: delay_in_ms })
+					MessageDelayer.deliver_async({message: {
+						top_10_since: now
+					}, delay: delay_in_ms })
 				end
 			end
 		end

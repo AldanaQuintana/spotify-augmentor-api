@@ -15,7 +15,7 @@ class MessageDelayer < QueuePublisher::Base
 
   def publish(options)
     if !options[:delay].nil?
-      message = options[:message]
+      message = message_from(options)
 
       from = Time.now
       delay_in_ms = options[:delay].to_i
@@ -35,5 +35,19 @@ class MessageDelayer < QueuePublisher::Base
     else
       super
     end
+  end
+
+  def message_from(options)
+  	if(!options[:message].nil? && !options[:message][:top_10_since].nil?)
+  		from = options[:message][:top_10_since]
+  		to = from + options[:delay].to_i
+  		
+  		{
+  			period: {
+  				from: from,
+  				to: to
+  			}
+  		}
+  	end
   end
 end
