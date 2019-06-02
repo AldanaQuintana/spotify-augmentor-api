@@ -3,7 +3,7 @@ require_relative '../domain/queue/message_delayer'
 require 'as-duration'
 require 'json'
 
-# This defines the level of 'real-timeness' of the api
+# Delay until the processing starts
 delay_in_ms = 1.minute.to_i * 1000
 
 MessageDelayer.deliver_async({message: {

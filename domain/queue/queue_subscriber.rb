@@ -2,6 +2,7 @@ require 'sneakers'
 require 'json'
 require 'as-duration'
 require_relative '../database/mongo_client'
+require_relative 'message_delayer'
 
 module QueueSubscriber
   class Base
@@ -81,7 +82,8 @@ module QueueSubscriber
         })
       end
 
-      delay_in_ms = 1.minute.to_i * 1000
+      # This defines the level of 'real-timeness' of the api
+      delay_in_ms = 10.minutes.to_i * 1000
 
       MessageDelayer.deliver_async({message: {
         top_10_since: to + 1.second

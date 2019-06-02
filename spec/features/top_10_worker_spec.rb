@@ -31,7 +31,7 @@ describe QueueSubscriber::Top10Worker do
 
 	it 'enqueues another message' do
 		new_message_from = to + 1.second #TODO: Fix ugly hack (+ 1.second). I was having a problem with the date format
-		delay_in_ms = 60000
+		delay_in_ms = 10.minutes.to_i * 1000
 		expect_message_to_be_delayed(now, delay_in_ms, {
 			period: {
 				from: new_message_from,
