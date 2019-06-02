@@ -11,4 +11,4 @@ Sneakers.configure(
 
 Sneakers.logger.level = Logger::INFO
 
-Sneakers::Runner.new([QueueSubscriber::Top10]).run
+Sneakers::Runner.new([QueueSubscriber::Top10Worker, QueueSubscriber::TracksPlayed]).run
