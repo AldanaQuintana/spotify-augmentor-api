@@ -30,4 +30,14 @@ module MongoHelpers
 	def saved_top_10_entries
 		top_10_collection.find({})
 	end
+
+	def insert_top_10(entries_played_on_period, period)
+		MongoClient.current[:top_10].insert_one({
+          from: period[:from],
+          to: period[:to],
+          tracks: entries_played_on_period.map do |entry|
+            { id: entry['_id'], play_count: entry['play_count'] }
+          end
+        })
+	end
 end

@@ -12,8 +12,8 @@ describe QueueSubscriber::Top10Worker do
 	let(:user_id_1) { 1234 }
 	let(:subscriber) { QueueSubscriber::Top10Worker.new }
 	let(:before_period){ from - 10000 }
-	let(:from) { DateTime.strptime('2019-04-01', '%Y-%m-%d') }
-	let(:to) { DateTime.strptime('2019-04-05', '%Y-%m-%d') }
+	let(:from) { Time.strptime('2019-04-01', '%Y-%m-%d') }
+	let(:to) { Time.strptime('2019-04-05', '%Y-%m-%d') }
 	let(:msg) do
 		{
 			message: {
@@ -59,7 +59,7 @@ describe QueueSubscriber::Top10Worker do
 		end
 
 		context 'and there are tracks for that period of time' do
-			let(:in_period) { DateTime.strptime('2019-04-02', '%Y-%m-%d') }
+			let(:in_period) { Time.strptime('2019-04-02', '%Y-%m-%d') }
 			let(:track_id_1) { '68mzU8iAvNnF3PCidY66K0' }
 			let(:track_id_2) { '51ChrwmUPDJvedPQnIU8Ls' }
 			let(:track_id_3) { '1YCUhR9OaaviHaVngMc7Ui' }

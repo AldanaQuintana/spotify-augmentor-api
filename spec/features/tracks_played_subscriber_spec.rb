@@ -25,8 +25,10 @@ describe QueueSubscriber::TracksPlayed do
 		end
 
 		before(:each) do
-			execute_before_processing!
-			subscriber.work(msg)
+			Timecop.freeze(now_timestamp) do
+				execute_before_processing!
+				subscriber.work(msg)
+			end
 		end
 
 		it 'saves it to the database' do
