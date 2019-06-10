@@ -27,17 +27,29 @@ describe 'get top 10 tracks' do
 	end
 
 	context 'when a time reference is specified' do
-		let(:twenty_minutes_ago){ now - 20.minutes }
-
 		before(:each) do
 			Timecop.freeze(now) do
-				get "/top-10?at=#{twenty_minutes_ago.strftime('%FT%T')}"
+				get "/top-10?at=#{time.strftime('%FT%T')}"
 			end
 		end
 
-		it 'returns the top 10 from the period that includes that time' do
-			expect(equal_dates(Time.parse(json_response.top_10['from']), now - 30.minutes)).to be(true)
-			expect(equal_dates(Time.parse(json_response.top_10['to']), now - 15.minutes)).to be(true)
+		context 'and there are results for that time' do
+			let(:time){ now - 20.minutes }
+
+
+			it 'returns the top 10 from the period that includes that time' do
+				expect(equal_dates(Time.parse(json_response.top_10['from']), now - 30.minutes)).to be(true)
+				expect(equal_dates(Time.parse(json_response.top_10['to']), now - 15.minutes)).to be(true)
+			end
+		end
+
+		context 'and there are no results for that time' do
+			let(:time){ now + 1.minute }
+
+			it 'returns the last available result' do
+				expect(equal_dates(Time.parse(json_response.top_10['from']), now - 15.minutes)).to be(true)
+				expect(equal_dates(Time.parse(json_response.top_10['to']), now)).to be(true)
+			end
 		end
 	end
 

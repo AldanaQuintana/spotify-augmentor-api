@@ -20,15 +20,16 @@ Routes::SpotifyAugmentor.define do
 
 	on 'top-10' do
 		on get do
-			res.status = 200
-
 			datetime = requested_at
+			
+			top_10 = MongoClient.current[:top_10]
 
-			result = MongoClient.current[:top_10].find({
+			result = top_10.find({
 	           from: { "$lt" => datetime },
 	           to: { "$gte" => datetime }
-	        }).first
+	        }).first || top_10.find({}, { :sort => { 'to' =>  -1 } }).first
 
+			res.status = 200
 			res.write({top_10: result}.to_json)
 		end
 	end
