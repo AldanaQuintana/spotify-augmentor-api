@@ -24,10 +24,28 @@ Routes::SpotifyAugmentor.define do
 			
 			top_10 = MongoClient.current[:top_10]
 
-			result = top_10.find({
+			top_10_entry = top_10.find({
 	           from: { "$lt" => datetime },
 	           to: { "$gte" => datetime }
 	        }).first || top_10.find({}, { :sort => { 'to' =>  -1 } }).first
+
+	        result = {}
+	        result['from'] = top_10_entry['from']
+	        result['to'] = top_10_entry['to']
+
+	        result['tracks'] = top_10_entry['tracks'].map do |track_entry|
+	        	track_id = track_entry['id']
+	        	play_count = track_entry['play_count']
+
+	        	track = Spotify.get_track(track_id)
+
+	        	{
+	        		'id' => track_id,
+	        		'play_count' => play_count,
+	        		'name' => track['name'],
+	        		'artist' => track['artists'][0]['name']
+	        	}
+	        end
 
 			res.status = 200
 			res.write({top_10: result}.to_json)
