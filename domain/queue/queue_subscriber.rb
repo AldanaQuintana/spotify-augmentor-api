@@ -70,6 +70,9 @@ module QueueSubscriber
         },
         {
           "$sort" => { play_count: -1 }
+        },
+        {
+          "$limit" => 10
         }
       ])
 

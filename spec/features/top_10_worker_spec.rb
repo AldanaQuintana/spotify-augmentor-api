@@ -69,7 +69,7 @@ describe QueueSubscriber::Top10Worker do
 			let(:track_id_7) { '33AxY0QUitvte6JV6B6uLE' }
 			let(:track_id_8) { '1Qdnvn4XlmZANCVy3XjrQo' }
 			let(:track_id_9) { '50kpGaPAhYJ3sGmk6vplg0' }
-			let(:before_processing_execute) do
+			let(:insert_tracks!) do
 				lambda {
 					10.times{ |user_id| insert_track(track_id_0, user_id, in_period) }
 					9.times{ |user_id| insert_track(track_id_1, user_id, in_period) }
@@ -83,6 +83,7 @@ describe QueueSubscriber::Top10Worker do
 					1.times{ |user_id| insert_track(track_id_9, user_id, in_period) }
 				}
 			end
+			let(:before_processing_execute){ insert_tracks! }
 
 			it 'saves an entry on the top_10 collection' do
 				expect(saved_top_10_entries.count).to eq(1)
@@ -126,6 +127,26 @@ describe QueueSubscriber::Top10Worker do
 
 				expect(saved_top_10_entry[:tracks][9][:id]).to eq(track_id_9)
 				expect(saved_top_10_entry[:tracks][9][:play_count]).to eq(1)				
+			end
+
+			context 'and some tracks have been played equal number of times' do
+				let(:before_processing_execute) do
+					lambda {
+						insert_tracks!.call
+						insert_track(track_id_1, 1, in_period)
+						insert_track('track_played_once', 2, in_period)
+					}
+				end
+
+				it 'only saves 10 track entries' do
+					expect(saved_top_10_entry[:tracks].count).to eq(10)
+
+					expect(saved_top_10_entry[:tracks][0][:id]).to eq(track_id_1)
+					expect(saved_top_10_entry[:tracks][0][:play_count]).to eq(10)
+
+					expect(saved_top_10_entry[:tracks][1][:id]).to eq(track_id_0)
+					expect(saved_top_10_entry[:tracks][1][:play_count]).to eq(10)
+				end
 			end
 		end
 	end
