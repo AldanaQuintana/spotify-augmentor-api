@@ -60,6 +60,10 @@ module QueueSubscriber
       from = Time.parse(period["from"])
       to = Time.parse(period["to"])
 
+
+      puts "---------Top10Worker Working---------"
+      puts "from #{from} to #{to}"
+
       played_on_period = MongoClient.current[:tracks_played].aggregate([
         {
           "$match" => { timestamp: { "$gt" => from, "$lt" => to } }
@@ -71,6 +75,8 @@ module QueueSubscriber
           "$sort" => { play_count: -1 }
         }
       ])
+
+      puts "played_on_period count #{played_on_period.count}"
 
       if (played_on_period.count > 0)
         MongoClient.current[:top_10].insert_one({
