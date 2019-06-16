@@ -1,3 +1,6 @@
+require 'database/mongo_client'
+require 'spotify'
+
 module Routes
   class SpotifyAugmentor < Cuba
   	def requested_at
