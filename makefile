@@ -19,3 +19,6 @@ console-env:
 
 qsubscribers:
 	env $$(cat .env.development) ./bin/queue_subscribers
+
+batchprocess-start:
+	env $$(cat .env.development) ./bin/batch_process_top_10
