@@ -11,8 +11,10 @@ class Spotify
 	@@token = ''
 	
 	class << self
-		def get_track
-			get '/v1/tracks/2TpxZ7JUBn3uw46aR7qd6V'
+		def get_track(id)
+			response = get "/v1/tracks/#{id}"
+			
+			JSON.parse(response.body)
 		end
 
 		# Available http methods against Spotify Api
