@@ -5,17 +5,17 @@ require 'mina/rvm'
 
 set :domain, '159.89.194.107'
 set :deploy_to, '/var/www/spotify-augmentor'
+set :rvm_path, '/etc/profile.d/rvm.sh'
 set :user, 'spotty'
 set :repository, 'git@github.com:AldanaQuintana/spotify-augmentor-api.git'
 set :branch, 'master'
 set :env_config, File.open('./.env')
 
 set :shared_paths, ['tmp/server', 'log']
-
 set :forward_agent, true     # SSH forward_agent.
 
 task :environment do
-  invoke :'rvm:use[ruby-2.6.3@default]'
+  invoke :'rvm:use[2.6.3]'
 end
 
 task :copy_env_config => :environment do
@@ -29,7 +29,7 @@ task :copy_env_config => :environment do
 end
 
 task :setup => :environment do
-  queue("ln -sTf #{deploy_to}/#{current_path} /var/www/app")
+  # queue("ln -sTf #{deploy_to}/#{current_path} /var/www/app")
   queue("mkdir -p #{deploy_to}/#{shared_path}/log")
 end
 
