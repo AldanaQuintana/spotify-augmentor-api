@@ -6,7 +6,7 @@ require 'foreman'
 
 set :domain, ''
 set :deploy_to, '/var/www/spotify-augmentor'
-set :user, 'ubuntu'
+set :user, 'spotty'
 set :repository, 'git@github.com:AldanaQuintana/spotify-augmentor-api.git'
 set :branch, 'master'
 set :env_config, File.open('./.env')
@@ -47,8 +47,8 @@ task :deploy => :environment do
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
-    invoke :'deploy:cleanup'
     invoke :'copy_env_config'
+    invoke :'deploy:cleanup'
 
     to :launch do
       invoke :'export_foreman_jobs'
@@ -59,28 +59,22 @@ task :deploy => :environment do
 end
 
 namespace :server do
-  set :puma_state, -> {"#{deploy_to}/#{shared_path}/tmp/server/state"}
-  set :puma_config, -> { "#{deploy_to}/#{current_path}/config/puma.rb" }
-
   task :stop => :environment do
     queue %Q%
-      cd #{deploy_to}/#{current_path}
-      echo "-----> Calling puma stop"
-      bundle exec pumactl -S "#{puma_state}" stop
+      sudo service nginx stop
     %
   end
 
   task :start => :environment do
     queue %Q%
-      cd #{deploy_to}/#{current_path}
-      echo "-----> Calling puma start"
-      bundle exec puma -C #{puma_config}
+      sudo service nginx start
     %
   end
 
   task :restart => :environment do
-    invoke :'server:stop'
-    invoke :'server:start'
+    queue %Q%
+      sudo service nginx restart
+    %
   end
 
   task :restart_queue => :environment do
