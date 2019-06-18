@@ -4,6 +4,7 @@ gem 'cuba'
 gem 'puma'
 
 gem 'mina'
+gem 'mina-puma'
 gem 'shotgun'
 gem "rack-test"
 gem 'rspec'
