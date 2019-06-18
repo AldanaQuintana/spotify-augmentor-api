@@ -2,9 +2,8 @@ require 'mina/bundler'
 require 'mina/rails'
 require 'mina/git'
 require 'mina/rbenv'  # for rbenv support. (http://rbenv.org)
-require 'foreman'
 
-set :domain, ''
+set :domain, '159.89.194.107'
 set :deploy_to, '/var/www/spotify-augmentor'
 set :user, 'spotty'
 set :repository, 'git@github.com:AldanaQuintana/spotify-augmentor-api.git'
@@ -34,10 +33,6 @@ task :setup => :environment do
   queue("mkdir -p #{deploy_to}/#{shared_path}/log")
 end
 
-task :export_foreman_jobs => :environment do
-  queue("cd #{deploy_to}/#{current_path} && sudo -E env \"PATH=$PATH\" foreman export upstart /etc/init -a queue -e #{deploy_to}/#{shared_path}/.env")
-end
-
 desc "Deploys the current version to the server."
 task :deploy => :environment do
   to :before_hook do
@@ -51,7 +46,6 @@ task :deploy => :environment do
     invoke :'deploy:cleanup'
 
     to :launch do
-      invoke :'export_foreman_jobs'
       invoke :'server:restart'
       invoke :'server:restart_queue'
     end
