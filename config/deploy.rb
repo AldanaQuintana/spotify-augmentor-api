@@ -1,7 +1,7 @@
 require 'mina/bundler'
 require 'mina/rails'
 require 'mina/git'
-require 'mina/rbenv'  # for rbenv support. (http://rbenv.org)
+require 'mina/rvm'
 
 set :domain, '159.89.194.107'
 set :deploy_to, '/var/www/spotify-augmentor'
@@ -10,12 +10,12 @@ set :repository, 'git@github.com:AldanaQuintana/spotify-augmentor-api.git'
 set :branch, 'master'
 set :env_config, File.open('./.env')
 
-set :shared_paths, ['tmp/server', 'log', '.rbenv-vars']
+set :shared_paths, ['tmp/server', 'log']
 
 set :forward_agent, true     # SSH forward_agent.
 
 task :environment do
-  invoke :'rbenv:load'
+  invoke :'rvm:use[ruby-2.6.3@default]'
 end
 
 task :copy_env_config => :environment do
