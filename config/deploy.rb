@@ -12,13 +12,13 @@ set :repository, 'git@github.com:AldanaQuintana/spotify-augmentor-api.git'
 set :branch, 'master'
 set :env_config, File.open('./.env')
 
-set :shared_paths, ['log', '.env']
+set :shared_paths, ['log', '.env', 'tmp/sockets']
 set :forward_agent, true     # SSH forward_agent.
 
 #Puma variables
-set :puma_socket, "#{deploy_to}/tmp/server/socket"
-set :puma_pid, "#{deploy_to}/tmp/server/pid"
-set :puma_state, "#{deploy_to}/tmp/server/state"
+set :puma_socket, "#{deploy_to}/current/tmp/server/socket"
+set :puma_pid, "#{deploy_to}/current/tmp/server/pid"
+set :puma_state, "#{deploy_to}/current/tmp/server/state"
 
 task :environment do
   invoke :'rvm:use[2.6.3]'
@@ -52,7 +52,7 @@ task :deploy => :environment do
     invoke :'deploy:cleanup'
 
     to :launch do
-      invoke :'puma:restart'
+      invoke :'puma:start'
       invoke :'server:restart'
       #invoke :'server:restart_queue'
     end
