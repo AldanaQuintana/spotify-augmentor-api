@@ -18,7 +18,7 @@ console-env:
 	fi
 
 qsubscribers:
-	env $$(cat .env.development) ./bin/queue_subscribers
+	env $$(cat .env) bundle exec bin/queue_subscribers.rb
 
 batchprocess-start:
 	env $$(cat .env.development) ./bin/batch_process_top_10

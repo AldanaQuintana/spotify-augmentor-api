@@ -81,7 +81,7 @@ namespace :server do
 
   task :restart_queue => :environment do
     queue %Q%
-      sudo start queue || sudo restart queue
+      make qsubscribers
     %
   end
 end
