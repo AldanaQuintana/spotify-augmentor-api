@@ -55,7 +55,7 @@ task :deploy => :environment do
     to :launch do
       invoke :'puma:start'
       invoke :'server:restart'
-      #invoke :'server:restart_queue'
+      invoke :'server:restart_queue'
     end
   end
 end
