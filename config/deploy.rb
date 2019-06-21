@@ -37,6 +37,7 @@ end
 task :setup => :environment do
   queue("ln -sTf #{deploy_to}/#{current_path} /var/www/app")
   queue("mkdir -p #{deploy_to}/#{shared_path}/log")
+  queue("mkdir -p #{deploy_to}/#{shared_path}/tmp/sockets")
 end
 
 desc "Deploys the current version to the server."
