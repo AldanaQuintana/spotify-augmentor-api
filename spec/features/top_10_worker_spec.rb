@@ -45,6 +45,7 @@ describe QueueSubscriber::Top10Worker do
 	end
 
 
+
 	describe 'when a process.top_10 msg is processed' do
 		before(:each) do
 			insert_track(track_id_0, user_id_1, before_period) # Insert track outside period for every test
@@ -69,6 +70,8 @@ describe QueueSubscriber::Top10Worker do
 			let(:track_id_7) { '33AxY0QUitvte6JV6B6uLE' }
 			let(:track_id_8) { '1Qdnvn4XlmZANCVy3XjrQo' }
 			let(:track_id_9) { '50kpGaPAhYJ3sGmk6vplg0' }
+			let(:track_id_00) { '4jshdkf3082sdkjflkdsj9' }
+			let(:outside_period) { in_period + 1.day }
 			let(:insert_tracks!) do
 				lambda {
 					10.times{ |user_id| insert_track(track_id_0, user_id, in_period) }
@@ -81,6 +84,9 @@ describe QueueSubscriber::Top10Worker do
 					3.times{ |user_id| insert_track(track_id_7, user_id, in_period) }
 					2.times{ |user_id| insert_track(track_id_8, user_id, in_period) }
 					1.times{ |user_id| insert_track(track_id_9, user_id, in_period) }
+
+					# Track not in period
+					1.times{ |user_id| insert_track(track_id_00, user_id, outside_period) }
 				}
 			end
 			let(:before_processing_execute){ insert_tracks! }
@@ -127,6 +133,10 @@ describe QueueSubscriber::Top10Worker do
 
 				expect(saved_top_10_entry[:tracks][9][:id]).to eq(track_id_9)
 				expect(saved_top_10_entry[:tracks][9][:play_count]).to eq(1)				
+			end
+
+			it 'removes them from the database' do
+				expect(saved_track_entries.count).to eq(1)
 			end
 
 			context 'and some tracks have been played equal number of times' do

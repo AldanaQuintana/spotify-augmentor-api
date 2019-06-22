@@ -32,7 +32,6 @@ module QueueSubscriber
 
   class TracksPlayed < Base
     from_queue :events, exchange: "tracks", exchange_type: :topic, routing_key: ["tracks.played"], ack: true
-    # TODO: Add a TTL index
 
     def _work(deserialized)
       tracks = deserialized["tracks"]
@@ -84,6 +83,12 @@ module QueueSubscriber
             { id: entry["_id"], play_count: entry["play_count"] }
           end
         })
+
+        MongoClient.current[:tracks_played].delete_many(
+          {
+            timestamp: { "$gt" => from, "$lt" => to }
+          }
+        )
       end
 
       # This defines the level of 'real-timeness' of the api
