@@ -40,8 +40,8 @@ module QueueSubscriber
       ops = tracks.map do |entry|
         {
           update_one: {
-            filter: { id: entry["id"], user_id: entry["user_id"] },
-            update: { id: entry["id"], user_id: entry["user_id"], timestamp: Time.parse(entry["timestamp"])},
+            filter: { track_id: entry["track_id"], user_id: entry["user_id"] },
+            update: { track_id: entry["track_id"], user_id: entry["user_id"], timestamp: Time.parse(entry["timestamp"])},
             upsert: true
           }
         }
@@ -66,7 +66,7 @@ module QueueSubscriber
           "$match" => { timestamp: { "$gt" => from, "$lt" => to } }
         },
         {
-          "$group" => { _id: "$id", play_count: { "$sum" => 1 } }
+          "$group" => { _id: "$track_id", play_count: { "$sum" => 1 } }
         },
         {
           "$sort" => { play_count: -1 }
@@ -81,7 +81,7 @@ module QueueSubscriber
           from: from,
           to: to,
           tracks: played_on_period.map do |entry|
-            { id: entry["_id"], play_count: entry["play_count"] }
+            { track_id: entry["_id"], play_count: entry["play_count"] }
           end
         })
       end

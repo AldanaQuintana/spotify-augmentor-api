@@ -15,7 +15,7 @@ describe QueueSubscriber::TracksPlayed do
 				message: {
 					tracks: [
 						{
-							id: track_id_1,
+							track_id: track_id_1,
 							user_id: user_id_1,
 							timestamp: now_timestamp
 						}
@@ -36,7 +36,7 @@ describe QueueSubscriber::TracksPlayed do
 		end
 
 		it 'saves it with the right format' do
-			expect(saved_track_entry[:id]).to eq(track_id_1)
+			expect(saved_track_entry[:track_id]).to eq(track_id_1)
 			expect(saved_track_entry[:user_id]).to eq(user_id_1)
 			expect(
 				equal_dates(

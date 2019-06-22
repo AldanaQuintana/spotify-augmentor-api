@@ -7,7 +7,7 @@ track_ids = JSON.parse(`cat #{track_id_samples_file}`)
 
 played_tracks = 10.times.map do 
 	{
-		id: track_ids.sample,
+		track_id: track_ids.sample,
 		user_id: rand(15),
 		timestamp: Time.now
 	}

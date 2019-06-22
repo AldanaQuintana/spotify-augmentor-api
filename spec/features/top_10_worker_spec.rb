@@ -98,34 +98,34 @@ describe QueueSubscriber::Top10Worker do
 			it 'saves the top 10 tracks' do
 				expect(saved_top_10_entry[:tracks].count).to eq(10)
 
-				expect(saved_top_10_entry[:tracks][0][:id]).to eq(track_id_0)
+				expect(saved_top_10_entry[:tracks][0][:track_id]).to eq(track_id_0)
 				expect(saved_top_10_entry[:tracks][0][:play_count]).to eq(10)
 
-				expect(saved_top_10_entry[:tracks][1][:id]).to eq(track_id_1)
+				expect(saved_top_10_entry[:tracks][1][:track_id]).to eq(track_id_1)
 				expect(saved_top_10_entry[:tracks][1][:play_count]).to eq(9)
 
-				expect(saved_top_10_entry[:tracks][2][:id]).to eq(track_id_2)
+				expect(saved_top_10_entry[:tracks][2][:track_id]).to eq(track_id_2)
 				expect(saved_top_10_entry[:tracks][2][:play_count]).to eq(8)
 
-				expect(saved_top_10_entry[:tracks][3][:id]).to eq(track_id_3)
+				expect(saved_top_10_entry[:tracks][3][:track_id]).to eq(track_id_3)
 				expect(saved_top_10_entry[:tracks][3][:play_count]).to eq(7)
 
-				expect(saved_top_10_entry[:tracks][4][:id]).to eq(track_id_4)
+				expect(saved_top_10_entry[:tracks][4][:track_id]).to eq(track_id_4)
 				expect(saved_top_10_entry[:tracks][4][:play_count]).to eq(6)
 
-				expect(saved_top_10_entry[:tracks][5][:id]).to eq(track_id_5)
+				expect(saved_top_10_entry[:tracks][5][:track_id]).to eq(track_id_5)
 				expect(saved_top_10_entry[:tracks][5][:play_count]).to eq(5)
 
-				expect(saved_top_10_entry[:tracks][6][:id]).to eq(track_id_6)
+				expect(saved_top_10_entry[:tracks][6][:track_id]).to eq(track_id_6)
 				expect(saved_top_10_entry[:tracks][6][:play_count]).to eq(4)
 
-				expect(saved_top_10_entry[:tracks][7][:id]).to eq(track_id_7)
+				expect(saved_top_10_entry[:tracks][7][:track_id]).to eq(track_id_7)
 				expect(saved_top_10_entry[:tracks][7][:play_count]).to eq(3)
 
-				expect(saved_top_10_entry[:tracks][8][:id]).to eq(track_id_8)
+				expect(saved_top_10_entry[:tracks][8][:track_id]).to eq(track_id_8)
 				expect(saved_top_10_entry[:tracks][8][:play_count]).to eq(2)
 
-				expect(saved_top_10_entry[:tracks][9][:id]).to eq(track_id_9)
+				expect(saved_top_10_entry[:tracks][9][:track_id]).to eq(track_id_9)
 				expect(saved_top_10_entry[:tracks][9][:play_count]).to eq(1)				
 			end
 
@@ -141,10 +141,10 @@ describe QueueSubscriber::Top10Worker do
 				it 'only saves 10 track entries' do
 					expect(saved_top_10_entry[:tracks].count).to eq(10)
 
-					expect(saved_top_10_entry[:tracks][0][:id]).to eq(track_id_1)
+					expect(saved_top_10_entry[:tracks][0][:track_id]).to eq(track_id_1)
 					expect(saved_top_10_entry[:tracks][0][:play_count]).to eq(10)
 
-					expect(saved_top_10_entry[:tracks][1][:id]).to eq(track_id_0)
+					expect(saved_top_10_entry[:tracks][1][:track_id]).to eq(track_id_0)
 					expect(saved_top_10_entry[:tracks][1][:play_count]).to eq(10)
 				end
 			end

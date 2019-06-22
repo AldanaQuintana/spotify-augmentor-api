@@ -14,7 +14,7 @@ module MongoHelpers
 
 	def insert_track(track_id, user_id, timestamp)
 		tracks_played_collection.insert_one(
-			{ id: track_id, user_id: user_id, timestamp: timestamp }
+			{ id: track_id + Time.now.to_s, track_id: track_id, user_id: user_id, timestamp: timestamp }
 		)
 	end
 
