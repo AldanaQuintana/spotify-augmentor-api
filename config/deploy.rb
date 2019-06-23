@@ -80,8 +80,8 @@ namespace :server do
   end
 
   task :restart_queue => :environment do
-    queue %Q%
+    command(%Q%
       make qsubscribers
-    %
+    %, quiet: true)
   end
 end
