@@ -5,7 +5,7 @@ require_relative '../domain/queue/queue_subscriber'
 
 Sneakers.configure(
   amqp: ENV['AMQP_URI'],
-  daemonize: false,
+  daemonize: true,
   log: STDOUT
 )
 
