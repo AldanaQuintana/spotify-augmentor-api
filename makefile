@@ -21,7 +21,7 @@ qsubscribers:
 	env $$(cat .env) bundle exec bin/queue_subscribers.rb
 
 batchprocess-start:
-	env $$(cat .env.development) ./bin/batch_process_top_10
+	env $$(cat .env) ./bin/batch_process_top_10
 
 publish-tracks:
 	env $$(cat .env) bundle exec bin/fake_tracks_publisher.rb
