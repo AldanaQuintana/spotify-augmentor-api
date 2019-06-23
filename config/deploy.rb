@@ -11,8 +11,9 @@ set :user, 'spotty'
 set :repository, 'git@github.com:AldanaQuintana/spotify-augmentor-api.git'
 set :branch, 'master'
 set :env_config, File.open('./.env')
+set :bundle_prefix, 'env $(cat .env | xargs) bundle exec '
 
-set :shared_paths, ['log', '.env', 'tmp/sockets']
+set :shared_paths, ['log', '.env', 'tmp/sockets', 'tmp/server']
 set :forward_agent, true     # SSH forward_agent.
 
 #Puma variables
@@ -38,6 +39,7 @@ task :setup => :environment do
   queue("ln -sTf #{deploy_to}/#{current_path} /var/www/app")
   queue("mkdir -p #{deploy_to}/#{shared_path}/log")
   queue("mkdir -p #{deploy_to}/#{shared_path}/tmp/sockets")
+  queue("mkdir -p #{deploy_to}/#{shared_path}/tmp/server")
 end
 
 desc "Deploys the current version to the server."
@@ -53,6 +55,7 @@ task :deploy => :environment do
     invoke :'deploy:cleanup'
 
     to :launch do
+      invoke :'puma:stop'
       invoke :'puma:start'
       invoke :'server:restart'
       invoke :'server:restart_queue'
