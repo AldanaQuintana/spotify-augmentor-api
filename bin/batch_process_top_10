@@ -7,5 +7,5 @@ require 'json'
 delay_in_ms = 1.minute.to_i * 1000
 
 MessageDelayer.deliver_async({message: {
-	top_10_since: Time.now
+	top_10_since: Time.now - 30.minutes
 }, delay: delay_in_ms })
