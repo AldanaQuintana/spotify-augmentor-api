@@ -21,4 +21,4 @@ Top 10 of a specific moment. (Use the parameter "at")
 curl -X GET 'http://spotify-augmentor.danacodes.tech/top-10?at=2019-06-26T01:20:00'
 ```
 
-For more details about usage, architecture and next steps see the [wiki](https://github.com/AldanaQuintana/spotify-augmentor-api/wiki).
+For more details about usage, architecture and next steps see the [wiki](https://github.com/AldanaQuintana/spotify-augmentor-api/wiki/Api-docs).
