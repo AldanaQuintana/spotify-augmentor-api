@@ -1,8 +1,6 @@
 Spotify augmentor api
 =====================
 
-[Demo](http://spotify-augmentor.danacodes.tech/top-10)
-
 # Description
 
 This api allows you to see the top 10 of the tracks most played in real time.
